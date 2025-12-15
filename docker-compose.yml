@@ -1,0 +1,34 @@
+services:
+  postgres:
+    image: postgres:16
+    container_name: mizan-db
+    environment:
+      POSTGRES_DB: mizan
+      POSTGRES_USER: postgres
+      POSTGRES_PASSWORD: dnd100
+    ports:
+      - "5432:5432"
+    volumes:
+      - postgres-data:/var/lib/postgresql/data
+
+  app:
+    image: eclipse-temurin:17-jdk
+    container_name: mizan-app
+    depends_on:
+      - postgres
+    working_dir: /app
+    volumes:
+      - ./:/app
+    command: ./mvnw spring-boot:run
+    environment:
+      SPRING_DATASOURCE_URL: jdbc:postgresql://postgres:5432/mizan
+      SPRING_DATASOURCE_USERNAME: postgres
+      SPRING_DATASOURCE_PASSWORD: dnd100
+      SPRING_JPA_HIBERNATE_DDL_AUTO: update
+      SPRING_JPA_SHOW_SQL: "true"
+      SERVER_PORT: 8080
+    ports:
+      - "8080:8080"
+
+volumes:
+  postgres-data:
