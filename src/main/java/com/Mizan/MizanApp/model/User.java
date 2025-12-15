@@ -1,4 +1,4 @@
-package com.Mizan.Mizan.model;
+package com.Mizan.MizanApp.model;
 
 import jakarta.persistence.*;
 import lombok.AllArgsConstructor;

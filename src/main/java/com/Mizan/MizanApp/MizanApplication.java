@@ -1,4 +1,4 @@
-package com.Mizan.Mizan;
+package com.Mizan.MizanApp;
 
 import org.springframework.boot.SpringApplication;
 import org.springframework.boot.autoconfigure.SpringBootApplication;

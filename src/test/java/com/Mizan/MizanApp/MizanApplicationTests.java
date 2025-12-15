@@ -1,4 +1,4 @@
-package com.Mizan.Mizan;
+package com.Mizan.MizanApp;
 
 import org.junit.jupiter.api.Test;
 import org.springframework.boot.test.context.SpringBootTest;

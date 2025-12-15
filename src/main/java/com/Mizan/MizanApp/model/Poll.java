@@ -1,4 +1,4 @@
-package com.Mizan.Mizan.model;
+package com.Mizan.MizanApp.model;
 
 import jakarta.persistence.*;
 import lombok.Data;
@@ -19,8 +19,8 @@ public class Poll {
     private String question;
 
     @ElementCollection
-    private List<String> options = new ArrayList<>();
+    private List<OptionVote> options = new ArrayList<>();
 
-    @ElementCollection
-    private List<Long> votes = new ArrayList<>();
+//    @ElementCollection
+//    private List<Long> votes = new ArrayList<>();
 }
