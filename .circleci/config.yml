@@ -3,31 +3,48 @@ version: 2.1
 jobs:
   build:
     docker:
+      # Main job container
       - image: cimg/openjdk:17.0
+        environment:
+          SPRING_DATASOURCE_URL: jdbc:postgresql://localhost:5432/mizan
+          SPRING_DATASOURCE_USERNAME: postgres
+          SPRING_DATASOURCE_PASSWORD: dnd100
+      # PostgreSQL service container
+      - image: postgres:15
+        environment:
+          POSTGRES_DB: mizan
+          POSTGRES_USER: postgres
+          POSTGRES_PASSWORD: dnd100
+
     working_directory: ~/project
+
     steps:
       - checkout
 
       - setup_remote_docker:
           docker_layer_caching: true
 
+      # Wait for PostgreSQL to initialize
       - run:
-          name: Build Maven project
-          command: mvn clean package -DskipTests=false
+          name: Wait for Postgres
+          command: |
+            echo "Waiting for Postgres to start..."
+            sleep 15
 
+      # Build the project and run tests
       - run:
-          name: Run tests
-          command: mvn test
+          name: Build and test Maven project
+          command: mvn clean package
 
+      # Build Docker image for the app
       - run:
           name: Build Docker image
-          command: |
-            docker build -t mizan-app:latest .
+          command: docker build -t mizan-app:latest .
 
+      # Run Docker container
       - run:
           name: Run Docker container
-          command: |
-            docker run -d -p 8080:8080 --name mizan-app mizan-app:latest
+          command: docker run -d -p 8080:8080 --name mizan-app mizan-app:latest
 
 workflows:
   version: 2
